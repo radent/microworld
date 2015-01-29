@@ -7,9 +7,15 @@ function MiniGame:start()
    -- create a tiny world
    microworld:create_world(128)
 
+   local player_id = microworld:get_local_player_id()
+   local pop = stonehearth.population:get_population(player_id)
+
    -- embark at -2, -2
    microworld:place_town_banner(-2, -2)
-   microworld:place_full_sized_entity('stonehearth:decoration:firepit', 0, 11)
+   microworld:place_entity('stonehearth:decoration:firepit', 0, 11, {
+         owner = player_id,
+         full_size = true,
+      })
 
    -- add some bushes so our citizens don't starve
    for x = 1,4 do

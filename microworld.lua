@@ -38,41 +38,61 @@ function MicroWorld:get_local_player_id()
    return LOCAL_PLAYER
 end
 
--- create the entity identifyed by `alias` and place it on the ground at
--- coordinate `x`, `z`.  `alias` may be the absolute path to a entity json file
--- or an alias in the manifest of a mod which points to it.
-function MicroWorld:place_entity(alias, x, z)
+-- helper function to create entity with options.  `options` may have the
+-- following values
+--
+--    owner (string): the player_id of the owner of the object
+--
+function MicroWorld:create_entity(alias, options)
    local entity = radiant.entities.create_entity(alias)
-   radiant.terrain.place_entity(entity, Point3(x, 1, z))
+   if options then
+      if options.owner then
+         entity:add_component('unit_info')
+                  :set_player_id(options.owner)
+      end
+   end
    return entity
 end
 
--- like `place_entity` but ensures you get the full sized, actual entity on
--- the ground.  For example if placing a 'stonehearth:furniture:comfy_bed'
--- entity, `place_entity` will put the iconic bed which a worker can pickup
--- and place.  `place_full_sized_entity` will create the actual bed that someone
--- can walk up and sleep in.
-function MicroWorld:place_full_sized_entity(alias, x, z)
-   local entity = radiant.entities.create_entity(alias)
-   radiant.terrain.place_entity(entity, Point3(x, 1, z), { force_iconic = false })
+-- create the entity identifyed by `alias` and place it on the ground at
+-- coordinate `x`, `z`.  `alias` may be the absolute path to a entity json file
+-- or an alias in the manifest of a mod which points to it.
+--
+-- `options` is an optional argument to assist in entity creation.  see
+-- MicroWorld:create_entity for more information.  In addition to those options
+-- the user may specify:
+--
+--    full_size (bool) : if true, places a full sized entity instead of an
+--    iconic one.  For example if placing a 'stonehearth:furniture:comfy_bed'
+--    the iconic version is the one a worker can pick up and carry around,
+--    while the full_sized one someone can walk up and sleep in.
+--
+function MicroWorld:place_entity(alias, x, z, options)
+   local entity = self:create_entity(alias, options)
+   local force_iconic = options and not options.full_size
+
+   radiant.terrain.place_entity(entity, Point3(x, 1, z), { force_iconic = force_iconic })
    return entity
 end
 
 -- places the town banner for the local player at `x`, `z`
 function MicroWorld:place_town_banner(x, z)
-   local banner = self:place_full_sized_entity('stonehearth:camp_standard', x, z)
+   local banner = self:place_entity('stonehearth:camp_standard', x, z, {
+         full_size = true
+      })
    stonehearth.town:get_town(LOCAL_PLAYER)
                         :set_banner(banner)
    return banner
 end
 
--- create `w` * `h` entities at `x`, `z`
-function MicroWorld:place_entity_cluster(alias, x, z, w, h)
+-- create `w` * `h` entities at `x`, `z`.  see `place_entity` for a discussion
+-- of options
+function MicroWorld:place_entity_cluster(alias, x, z, w, h, options)
    w = w and w or 3
    h = h and h or 3
    for i = x, x+w-1 do
       for j = z, z+h-1 do
-         self:place_entity(alias, i, j)
+         self:place_entity(alias, i, j, options)
       end
    end
 end
