@@ -11,15 +11,11 @@ creates two workers, a stockpile, and some harvestable entities.
 
 For more information about Stonehearth, please visit http://stonehearth.net
 
- 
-
 Installing
 ----------
 
 To install, simply put the Microworld folder in your Stonehearth mod's
 directory.
-
- 
 
 Running via Command Line
 ------------------------
@@ -30,20 +26,14 @@ To run Microworld, run stonehearth with the following options:
 Stonehearth.exe --game.main_mod=microworld
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- 
-
 You may optionally specify the flag:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  --mods.microworld.world=<world> (default:mini_game)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- 
-
 To run one of the different worlds packed with the mod. If you leave off the
 world parameter, the mini\_game world get be loaded.
-
- 
 
 Running via User Settings
 -------------------------
@@ -66,6 +56,3 @@ run the harvest\_test game world every time you run Stonehearth:
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- 
-
- 
