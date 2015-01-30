@@ -10,8 +10,11 @@ function MiniGame:start()
    local player_id = microworld:get_local_player_id()
    local pop = stonehearth.population:get_population(player_id)
 
-   -- embark at -2, -2
-   microworld:place_town_banner(-2, -2)
+   -- embark at 0, 0
+   microworld:place_town_banner(0, 0)
+
+   -- make sure the firepit is owned by the local player.  otherwise we'll
+   -- run into trouble when people go to light it.
    microworld:place_entity('stonehearth:decoration:firepit', 0, 11, {
          owner = player_id,
          full_size = true,
